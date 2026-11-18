@@ -1,0 +1,123 @@
+@font-face {
+  font-family: "Allo";
+  src: url("fonts/AlloVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #f6f4ef;
+  --text: #1b1a18;
+  --muted: #5d5a54;
+  --rule: #dcd7cc;
+  --accent: #b5521f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0d0c;
+    --text: #efebe4;
+    --muted: #a59f95;
+    --rule: #2c2824;
+    --accent: #f0a05a;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Allo", system-ui, -apple-system, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 56px 16px 80px;
+}
+
+header { margin-bottom: 40px; }
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 650;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.brand::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+h1 {
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 700;
+  margin: 24px 0 8px;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: 21px;
+  font-weight: 650;
+  margin: 40px 0 8px;
+}
+
+p, li { color: var(--text); }
+
+.lede { font-size: 19px; color: var(--muted); margin-top: 0; }
+
+.meta { color: var(--muted); font-size: 14px; }
+
+ul { padding-left: 20px; }
+
+li { margin: 6px 0; }
+
+a { color: var(--accent); text-underline-offset: 3px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 15px;
+}
+
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+th { font-weight: 650; }
+
+footer {
+  margin-top: 64px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+footer a { color: var(--muted); }
+
+nav.links { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 8px; }
+
+@media (max-width: 480px) {
+  h1 { font-size: 32px; }
+  table { font-size: 14px; }
+}
