@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get FilmCap</title>
+  <meta name="description" content="FilmCap: authentic film, photo and video, on iPhone.">
+  <link rel="stylesheet" href="../style.css">
+  <script>
+    // Where the QR code on a FilmCap photo leads. The code stays the same for good; only this
+    // changes. Until FilmCap is on the App Store, its beta; then its App Store page.
+    var live = false;
+    var appStore = "https://apps.apple.com/app/id6836638549";
+    var beta = "https://testflight.apple.com/join/mrzy7V6C";
+    var iPhone = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    var target = iPhone ? (live ? appStore : beta) : (live ? appStore : "../");
+    location.replace(target);
+  </script>
+</head>
+<body class="home">
+  <header class="hero">
+    <a class="brand" href="../">FilmCap</a>
+    <h1>Authentic film,<br>photo &amp; video.</h1>
+    <p class="cta"><a class="button" href="https://testflight.apple.com/join/mrzy7V6C">Get FilmCap</a></p>
+  </header>
+</body>
+</html>
