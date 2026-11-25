@@ -19,7 +19,7 @@
       <h1>Authentic film,<br>photo &amp; video.</h1>
       <p class="lede">Every photo starts from true RAW, with the iPhone's own processing off, and develops through the film you pick. 150 films and more, or make your own.</p>
       <p class="cta">
-        <a class="button" href="https://testflight.apple.com/join/mrzy7V6C">Join the beta</a>
+        <a class="button get" href="https://testflight.apple.com/join/mrzy7V6C">Join the beta</a>
         <span class="soon">On the App Store soon</span>
       </p>
     </div>
@@ -95,7 +95,7 @@
   <p>The first 30 photos and 5 videos come with every film. FilmCap Pro opens every film and tool: monthly, yearly, or once for life. Shared with your family.</p>
   <h2>Your photos stay yours</h2>
   <p>Photos and videos are developed on your iPhone and saved to your Photos library. FilmCap sends none of them anywhere. <a href="privacy.html">Privacy Policy</a></p>
-  <p class="cta"><a class="button" href="https://testflight.apple.com/join/mrzy7V6C">Join the beta</a></p>
+  <p class="cta"><a class="button get" href="https://testflight.apple.com/join/mrzy7V6C">Join the beta</a></p>
 </section>
 
 <footer>
@@ -107,5 +107,16 @@
   <p>Set in <a href="https://github.com/joshpuckett/allo">Allo</a> (SIL Open Font License, <a href="fonts/Allo-OFL.txt">licence</a>).</p>
 </footer>
 
+  <script>
+    // Once Apple lists FilmCap, its buttons lead to the App Store instead of the beta.
+    function listed(answer) {
+      if (!(answer && answer.resultCount > 0)) return;
+      document.querySelectorAll("a.get").forEach(function (a) {
+        a.href = "https://apps.apple.com/app/id6836638549";
+        a.textContent = "Get FilmCap";
+      });
+    }
+  </script>
+  <script src="https://itunes.apple.com/lookup?id=6836638549&callback=listed" async></script>
 </body>
 </html>

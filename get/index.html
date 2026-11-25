@@ -8,15 +8,22 @@
   <link rel="stylesheet" href="../style.css">
   <script>
     // Where the QR code on a FilmCap photo leads. The code stays the same for good; only this
-    // changes. Until FilmCap is on the App Store, its beta; then its App Store page.
-    var live = false;
+    // page decides: FilmCap's App Store page once Apple lists it (asked of Apple's own lookup),
+    // its beta until then (or if the lookup does not answer in time).
     var appStore = "https://apps.apple.com/app/id6836638549";
     var beta = "https://testflight.apple.com/join/mrzy7V6C";
     var iPhone = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
       (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-    var target = iPhone ? (live ? appStore : beta) : (live ? appStore : "../");
-    location.replace(target);
+    var gone = false;
+    function listed(answer) {
+      if (gone) return;
+      gone = true;
+      var live = !!(answer && answer.resultCount > 0);
+      location.replace(live ? appStore : (iPhone ? beta : "../"));
+    }
+    setTimeout(function () { listed(null); }, 2500);
   </script>
+  <script src="https://itunes.apple.com/lookup?id=6836638549&callback=listed" async></script>
 </head>
 <body class="home">
   <header class="hero">
