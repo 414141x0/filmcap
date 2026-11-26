@@ -2,121 +2,261 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FilmCap: Professional Camera</title>
-  <meta name="description" content="Authentic film, photo and video. Every photo starts from true RAW and develops through the film you pick.">
-  <meta property="og:title" content="FilmCap: Professional Camera">
-  <meta property="og:description" content="Authentic film, photo and video, on your iPhone.">
-  <meta property="og:image" content="img/photo-1.jpg">
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>FilmCap: a film camera for iPhone</title>
+  <meta name="description" content="FilmCap takes a true RAW photo, with the phone's processing and AI turned off, and develops it through the film you choose. Some moments ask to be kept.">
+  <meta name="theme-color" content="#0e0c0a">
+  <meta property="og:title" content="FilmCap: a film camera for iPhone">
+  <meta property="og:description" content="Some moments ask to be kept. A true RAW photo, developed through the film you choose.">
+  <meta property="og:image" content="https://414141x0.github.io/filmcap/img/share.jpg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="apple-itunes-app" content="app-id=6836638549">
+  <link rel="preload" href="img/pano/cafe-soft.jpg" as="image">
+  <link rel="stylesheet" href="home.css">
 </head>
-<body class="home">
+<body>
 
-<header class="hero">
-  <a class="brand" href="./">FilmCap</a>
-  <div class="hero-grid">
-    <div>
-      <h1>Authentic film,<br>photo &amp; video.</h1>
-      <p class="lede">Every photo starts from true RAW, with the iPhone's own processing off, and develops through the film you pick. 150 films and more, or make your own.</p>
-      <p class="cta">
-        <a class="button get" href="https://testflight.apple.com/join/mrzy7V6C">Join the beta</a>
-        <span class="soon">On the App Store soon</span>
-      </p>
-    </div>
-    <img class="phone" src="img/camera.webp" width="640" height="1326" alt="FilmCap's camera, a cliff over a turquoise sea in the viewfinder">
-  </div>
+<a class="skip" href="#develop">Skip the viewfinder</a>
+
+<header class="bar">
+  <a class="brand" href="./" aria-label="FilmCap, home">FilmCap</a>
+  <nav aria-label="Sections">
+    <a href="#films">Films</a>
+    <a href="#darkroom">Darkroom</a>
+    <a href="#pricing">Pricing</a>
+  </nav>
+  <a class="store small" href="https://apps.apple.com/app/id6836638549">App Store</a>
 </header>
 
-<section class="prints" aria-label="Photos">
-  <h2>Authentic film, your photo.</h2>
-  <div class="line">
-    <img src="img/photo-1.jpg" alt="A green headland over a turquoise sea" loading="lazy">
-    <img src="img/photo-2.jpg" alt="A pine forest above a snowfield" loading="lazy">
-    <img src="img/photo-3.jpg" alt="A mountain road under a grey sky" loading="lazy">
-    <img src="img/photo-4.jpg" alt="A white beach seen from a cliff" loading="lazy">
-    <img src="img/photo-5.jpg" alt="Misty hills over red scrub" loading="lazy">
-    <img src="img/photo-6.jpg" alt="Snow and mountains in soft light" loading="lazy">
+<main>
+
+<!-- One day through the viewfinder: the world around the phone, the phone's picture through a film. -->
+<section class="story" id="story" aria-label="A day with FilmCap">
+  <div class="stage">
+    <canvas id="world" aria-hidden="true"></canvas>
+    <div class="veil" aria-hidden="true"></div>
+
+    <div class="phone" id="phone">
+      <div class="screen">
+        <div class="island" aria-hidden="true"></div>
+        <div class="topbar" aria-hidden="true">
+          <span class="ico ratio">4:3</span>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M4 3l16 18" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span class="spacer"></span>
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2 2.4"/></svg>
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <div class="viewport" id="viewport" tabindex="0" role="group"
+             aria-label="FilmCap's viewfinder. Swipe, or use the left and right arrow keys, for another film.">
+          <img class="fallback" src="img/camera.webp" alt="FilmCap's camera, a cliff over a turquoise sea in the viewfinder" hidden>
+          <div class="filmname" id="filmname" aria-hidden="true"></div>
+          <div class="flash" id="flash" aria-hidden="true"></div>
+        </div>
+        <div class="deck">
+          <button class="pill" id="pill" type="button" aria-label="Next film">
+            <span class="dot" id="dot"></span><span id="pillname">Honey</span><span class="kind" id="pillkind">Warm</span>
+          </button>
+          <div class="controls">
+            <a class="pocket" id="pocket" href="#darkroom" aria-label="Your darkroom">
+              <img id="pocketimg" alt="" hidden>
+            </a>
+            <button class="shutter" id="shutter" type="button" aria-label="Take a photo">
+              <span class="hist" aria-hidden="true"></span>
+            </button>
+            <span class="zoom" aria-hidden="true">1×</span>
+          </div>
+        </div>
+      </div>
+      <div class="below">
+        <button class="tilt" id="tilt" type="button" hidden>Move your phone to look around</button>
+        <p class="hints" id="hints" aria-hidden="true">
+          <span class="hint look">Move to look around</span>
+          <span class="hint swipe">Swipe the picture for another film</span>
+          <span class="hint keep">Tap the shutter to keep one</span>
+        </p>
+      </div>
+    </div>
+
+    <p class="live" id="live" aria-live="polite"></p>
+  </div>
+
+  <div class="chapters">
+    <article class="chapter intro" data-scene="cafe" data-film="style.gold">
+      <div class="card">
+        <p class="edge">FILMCAP · A FILM CAMERA FOR IPHONE</p>
+        <h1>Some moments ask to be kept.</h1>
+        <p class="lede">FilmCap takes a true RAW photo, with the phone’s processing and AI turned off, and develops it through the film you choose. What you see is what you keep.</p>
+        <p class="cta">
+          <a class="store" href="https://apps.apple.com/app/id6836638549">Download on the App Store</a>
+          <span class="meta">Free · iPhone · iOS 27</span>
+        </p>
+        <p class="next" aria-hidden="true">Spend a day with it ↓</p>
+      </div>
+    </article>
+
+    <article class="chapter" data-scene="cafe" data-film="style.gold">
+      <div class="card">
+        <p class="edge">01A · 8:14 AM</p>
+        <h2>Coffee, before anyone needs you.</h2>
+        <p>The good corner table. Light coming in sideways, the cup still too hot to hold. Nothing is happening, and that’s the point. You won’t remember the exact colours. Film will.</p>
+        <p class="aside">Swipe across the picture to try another film. Honey suits mornings.</p>
+      </div>
+    </article>
+
+    <article class="chapter" data-scene="lake" data-film="emulsion.halcyon">
+      <div class="card">
+        <p class="edge">02A · 6:40 PM</p>
+        <h2>The lake goes quiet.</h2>
+        <p>Everyone stops talking at the same time. The water holds the sky for a while, and then it doesn’t. Halcyon keeps the evening soft and warm, the way it felt.</p>
+        <p class="aside">Look around. Tap the shutter when it feels right.</p>
+      </div>
+    </article>
+
+    <article class="chapter" data-scene="night" data-film="emulsion.lantern">
+      <div class="card">
+        <p class="edge">03A · 11:52 PM</p>
+        <h2>The long way home.</h2>
+        <p>Nobody wants the night to end, so you walk. Streetlamps on old stone, a laugh that carries down the lane. Lantern Night is tungsten cinema film, made for nights like this.</p>
+        <p class="aside" id="keptline">The photos you keep here hang in the darkroom below.</p>
+      </div>
+    </article>
   </div>
 </section>
 
-<section class="feature">
-  <img class="phone" src="img/controls.webp" width="640" height="1326" alt="The dials down the side of the viewfinder, white balance turned out" loading="lazy">
-  <div>
-    <h2>Four dials by the frame</h2>
-    <p>Focus, white balance, shutter and exposure sit beside the picture. Tap one and a wheel turns out. The shutter button is a live histogram, so you see the light before you shoot.</p>
+<div class="strip" aria-hidden="true"><span>FILMCAP · 35MM · SAFETY FILM</span><span>04A</span></div>
+
+<section class="develop" id="develop">
+  <div class="copy">
+    <p class="edge">04A · DEVELOPED, NOT DECIDED</p>
+    <h2>Your phone decides how a moment looks. FilmCap lets it be.</h2>
+    <p>Most phone photos are finished before you see them: sharpened, brightened, smoothed, decided. FilmCap turns that off. It takes a RAW photo, the light exactly as the sensor caught it, and develops it on your iPhone through the film you choose.</p>
+    <ul class="facts">
+      <li><strong>True RAW.</strong> The phone’s own processing off, the DNG negative kept in Photos.</li>
+      <li><strong>No AI.</strong> Nothing invented, nothing smoothed away.</li>
+      <li><strong>What you see is what you get.</strong> The viewfinder shows the film live.</li>
+    </ul>
+  </div>
+  <figure class="compare" id="compare">
+    <img src="img/views/night-lantern.webp" alt="A cobbled lane at night through Lantern Night: warm, glowing streetlight" width="1500" height="1000" loading="lazy">
+    <div class="before" id="before">
+      <img src="img/views/night-plain.webp" alt="The same lane developed plainly" width="1500" height="1000" loading="lazy">
+    </div>
+    <input class="handle" id="handle" type="range" min="0" max="100" value="50" aria-label="Compare plain and Lantern Night">
+    <figcaption><span>Plain</span><span>Lantern Night</span></figcaption>
+  </figure>
+</section>
+
+<div class="strip" aria-hidden="true"><span>FILMCAP · 35MM · SAFETY FILM</span><span>05A</span></div>
+
+<section class="films" id="films">
+  <header class="head">
+    <p class="edge">05A · THE ROLL</p>
+    <h2>One of each feeling.</h2>
+    <p>These twelve come loaded on a new camera, one of every kind. There are 150 films in all, from classic stocks to black and white, and you can make your own. Tap one to load it in the viewfinder.</p>
+  </header>
+  <ol class="wall" id="wall"></ol>
+  <p class="note">The viewfinder and the films here show each film’s colour on a 360° photo. In FilmCap, every film also has its grain, glow and halation, on your own RAW photos.</p>
+</section>
+
+<div class="strip" aria-hidden="true"><span>FILMCAP · 35MM · SAFETY FILM</span><span>06A</span></div>
+
+<section class="darkroom" id="darkroom">
+  <header class="head">
+    <p class="edge">06A · THE DARKROOM</p>
+    <h2 id="darkroomtitle">Every moment, as you took it.</h2>
+    <p id="darkroomline">Your photos wait in the darkroom, to look at whenever you like. Lift one into the developer to change its film, its light, its colour and grain, or place a new lamp in a scene you already took.</p>
+  </header>
+  <div class="line" id="line" tabindex="0" aria-label="Photos on the line">
+    <figure class="print sample"><img src="img/photo-1.jpg" alt="A green headland over a turquoise sea" loading="lazy"><figcaption>The headland</figcaption></figure>
+    <figure class="print sample"><img src="img/photo-2.jpg" alt="A pine forest above a snowfield" loading="lazy"><figcaption>First snow</figcaption></figure>
+    <figure class="print sample"><img src="img/photo-3.jpg" alt="A mountain road under a grey sky" loading="lazy"><figcaption>The pass</figcaption></figure>
+    <figure class="print sample"><img src="img/photo-4.jpg" alt="A white beach seen from a cliff" loading="lazy"><figcaption>The bay</figcaption></figure>
+    <figure class="print sample"><img src="img/photo-5.jpg" alt="Misty hills over red scrub" loading="lazy"><figcaption>Morning mist</figcaption></figure>
+    <figure class="print sample"><img src="img/photo-6.jpg" alt="Snow and mountains in soft light" loading="lazy"><figcaption>Last light</figcaption></figure>
+  </div>
+  <p class="note">Photos by the developer, taken with FilmCap.</p>
+</section>
+
+<section class="pair-sections">
+  <article class="feature">
+    <img class="shot" src="img/video.webp" width="640" height="1326" alt="FilmCap's video mode, a misty forest in the viewfinder" loading="lazy">
+    <div>
+      <p class="edge">07A · VIDEO</p>
+      <h2>And when it moves.</h2>
+      <p>Every film works on video too. Shoot Log and ProRes when you’d rather grade it yourself. Dolly zoom and forced perspective, for the shots you’ve only seen in films.</p>
+    </div>
+  </article>
+  <article class="feature flip">
+    <img class="shot" src="img/stickers.webp" width="640" height="1326" alt="Stickers earned in FilmCap" loading="lazy">
+    <div>
+      <p class="edge">08A · STICKERS</p>
+      <h2>Some moments deserve a sticker.</h2>
+      <p>Your first photo. A photo of someone you love. One taken after midnight. A horizon dead level. FilmCap notices, and keeps a sticker for each.</p>
+    </div>
+  </article>
+  <article class="feature">
+    <div class="duo">
+      <img class="shot" src="img/widgets-prints.webp" width="640" height="1326" alt="Home Screen widgets: a print over its colours" loading="lazy">
+      <img class="shot" src="img/widgets-films.webp" width="640" height="1326" alt="Home Screen widgets: recent films and quick buttons" loading="lazy">
+    </div>
+    <div>
+      <p class="edge">09A · HOME SCREEN</p>
+      <h2>Keep them close.</h2>
+      <p>Widgets for your newest photo and its colours, a roll of your photos at random, and the films you used lately, one tap from the camera.</p>
+    </div>
+  </article>
+</section>
+
+<div class="strip" aria-hidden="true"><span>FILMCAP · 35MM · SAFETY FILM</span><span>10A</span></div>
+
+<section class="pricing" id="pricing">
+  <header class="head">
+    <p class="edge">10A · PRICING</p>
+    <h2>Start with a free roll.</h2>
+  </header>
+  <div class="plans">
+    <div class="plan">
+      <h3>Your first roll</h3>
+      <p class="price">Free</p>
+      <p>Your first 30 photos and 5 videos, with every film.</p>
+    </div>
+    <div class="plan">
+      <h3>After that</h3>
+      <p class="price">Free</p>
+      <p>Keep three films of your choice, for good. Photos carry a small FilmCap mark.</p>
+    </div>
+    <div class="plan pro">
+      <h3>FilmCap Pro</h3>
+      <p class="price">$3 a month<span> · $30 a year · $50 once</span></p>
+      <p>Every film and tool, the film editor, and every film still to come. No mark. Shared with your family.</p>
+    </div>
+  </div>
+  <p class="note">US prices; the App Store shows yours. Subscriptions renew until cancelled in Settings, at least 24 hours before the period ends. No free trials.</p>
+  <div class="private">
+    <h3>Your photos stay yours.</h3>
+    <p>Photos and videos are developed on your iPhone and saved to your Photos library. FilmCap sends none of them anywhere. <a href="privacy.html">Privacy Policy</a></p>
   </div>
 </section>
 
-<section class="feature flip">
-  <img class="phone" src="img/darkroom.webp" width="640" height="1326" alt="Prints hanging on lines by day in the darkroom" loading="lazy">
-  <div>
-    <h2>Photos hang up to dry</h2>
-    <p>Lift one into the developer and reprint it from its negative. Faders for light, tone, colour and texture, masks for the sky or a subject, and lamps you place in the scene.</p>
-  </div>
+<section class="end">
+  <h2>Go keep something.</h2>
+  <p class="cta"><a class="store" href="https://apps.apple.com/app/id6836638549">Download on the App Store</a></p>
+  <p class="meta">Free · Requires iOS 27 or later</p>
 </section>
 
-<section class="feature">
-  <img class="phone" src="img/film-editor.webp" width="640" height="1326" alt="A film's sliders over the live viewfinder" loading="lazy">
-  <div>
-    <h2>Or create your own</h2>
-    <p>Open any film and change it while you watch the viewfinder. Keep it as a film of your own.</p>
-  </div>
-</section>
+</main>
 
-<section class="feature flip">
-  <img class="phone" src="img/video.webp" width="640" height="1326" alt="Video mode with a misty forest in the viewfinder" loading="lazy">
-  <div>
-    <h2>Video Mode</h2>
-    <p>The same films apply to video, with dolly zoom.</p>
-  </div>
-</section>
-
-<section class="feature">
-  <div class="pair">
-    <img class="phone" src="img/widgets-prints.webp" width="640" height="1326" alt="Home Screen widgets: a print over its five colours" loading="lazy">
-    <img class="phone" src="img/widgets-films.webp" width="640" height="1326" alt="Home Screen widgets: recent films and quick buttons" loading="lazy">
-  </div>
-  <div>
-    <h2>Your prints, close at hand</h2>
-    <p>Widgets for your newest print and its five colours, a roll of your prints at random, the films you used lately, and one tap to a photo, a video or the editor.</p>
-  </div>
-</section>
-
-<section class="feature flip">
-  <img class="phone" src="img/stickers.webp" width="640" height="1326" alt="Stickers earned, in Settings" loading="lazy">
-  <div>
-    <h2>Hidden achievements</h2>
-    <p>Stickers to celebrate the moments you cherish: the first cat, a level horizon, a photo after midnight.</p>
-  </div>
-</section>
-
-<section class="plain">
-  <h2>Try it free</h2>
-  <p>The first 30 photos and 5 videos come with every film. FilmCap Pro opens every film and tool: monthly, yearly, or once for life. Shared with your family.</p>
-  <h2>Your photos stay yours</h2>
-  <p>Photos and videos are developed on your iPhone and saved to your Photos library. FilmCap sends none of them anywhere. <a href="privacy.html">Privacy Policy</a></p>
-  <p class="cta"><a class="button get" href="https://testflight.apple.com/join/mrzy7V6C">Join the beta</a></p>
-</section>
-
-<footer>
-  <nav class="links">
-    <a href="privacy.html">Privacy Policy</a>
+<footer class="foot">
+  <nav class="links" aria-label="About FilmCap">
     <a href="support.html">Support</a>
+    <a href="privacy.html">Privacy Policy</a>
     <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Terms of Use (EULA)</a>
   </nav>
-  <p>Set in <a href="https://github.com/joshpuckett/allo">Allo</a> (SIL Open Font License, <a href="fonts/Allo-OFL.txt">licence</a>).</p>
+  <p>360° photos by <a href="https://polyhaven.com">Poly Haven</a> (CC0). Set in <a href="https://github.com/joshpuckett/allo">Allo</a> (<a href="fonts/Allo-OFL.txt">SIL Open Font License</a>).</p>
+  <p>Apple, iPhone and App Store are trademarks of Apple Inc., registered in the U.S. and other countries.</p>
 </footer>
 
-  <script>
-    // Once Apple lists FilmCap, its buttons lead to the App Store instead of the beta.
-    function listed(answer) {
-      if (!(answer && answer.resultCount > 0)) return;
-      document.querySelectorAll("a.get").forEach(function (a) {
-        a.href = "https://apps.apple.com/app/id6836638549";
-        a.textContent = "Get FilmCap";
-      });
-    }
-  </script>
-  <script src="https://itunes.apple.com/lookup?id=6836638549&callback=listed" async></script>
+<script src="home.js" defer></script>
 </body>
 </html>

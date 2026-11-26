@@ -1,0 +1,86 @@
+[
+ {
+  "character": "Everyday",
+  "id": "grade.none",
+  "name": "Plain",
+  "note": "The RAW as the sensor saw it, developed neutrally.",
+  "dot": "#cc855b"
+ },
+ {
+  "character": "Everyday",
+  "id": "grade.natural",
+  "name": "Natural",
+  "note": "Gentle contrast and honest colour.",
+  "dot": "#c58c69"
+ },
+ {
+  "character": "Warm",
+  "id": "style.gold",
+  "name": "Honey",
+  "note": "Warm, golden hues for bright, sunny days.",
+  "dot": "#bb5c38"
+ },
+ {
+  "character": "Warm",
+  "id": "emulsion.halcyon",
+  "name": "Halcyon",
+  "note": "Portrait negative on a warm print, glowing highlights.",
+  "dot": "#e28957"
+ },
+ {
+  "character": "Faded",
+  "id": "grade.classic",
+  "name": "Archive",
+  "note": "Muted, warm colour, like a print kept in a drawer.",
+  "dot": "#d3a06e"
+ },
+ {
+  "character": "Cinema",
+  "id": "style.tungsten",
+  "name": "Lamplight",
+  "note": "Blue-green shadows, warm highlights, popping reds.",
+  "dot": "#d9775f"
+ },
+ {
+  "character": "Cinema",
+  "id": "video.daylight-reel",
+  "name": "Daylight Reel",
+  "note": "A daylight cinema look, contrast built in.",
+  "dot": "#a95a3c"
+ },
+ {
+  "character": "Cinema",
+  "id": "emulsion.lantern",
+  "name": "Lantern Night",
+  "note": "Tungsten cinema film at night: red halos round every light.",
+  "dot": "#f77a31"
+ },
+ {
+  "character": "Vivid",
+  "id": "style.calypso",
+  "name": "Riviera",
+  "note": "Bright summer colour, intense blues and oranges.",
+  "dot": "#ea895a"
+ },
+ {
+  "character": "Black & White",
+  "id": "grade.monochrome",
+  "name": "Graphite",
+  "note": "Balanced black and white.",
+  "dot": "#999999"
+ },
+ {
+  "character": "Black & White",
+  "id": "grade.studio",
+  "name": "Studio",
+  "note": "Rich monochrome portrait tones with grain.",
+  "dot": "#a5a2a0"
+ },
+ {
+  "character": "Film Stocks",
+  "id": "stock.portra400",
+  "name": "Portra 400",
+  "note": "Film stock",
+  "dot": "#e88a4a"
+ }
+]
