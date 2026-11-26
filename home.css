@@ -147,79 +147,75 @@ p { margin: 0; }
     linear-gradient(90deg, rgba(14, 12, 10, 0.78), rgba(14, 12, 10, 0.1) 52%, transparent);
 }
 
-.phone {
-  --w: min(330px, 26vw, 38vh);
+/* The phone: FilmCap's real camera screen (img/ui, matted from the app) at its own 420 × 912 points,
+   in an iPhone Air frame (img/ui/air.svg), scaled whole (--s). The picture under the screen is the
+   world's canvas behind it; everything that moves is drawn live over it. */
+.device {
   position: absolute;
   left: 70%;
   top: 50%;
-  width: var(--w);
-  aspect-ratio: 9 / 19.5;
-  translate: -50% -50%;
-  border-radius: calc(var(--w) * 0.155);
-  /* A bezel, not a back: the screen inside it is a window onto the picture drawn behind. */
-  border: calc(var(--w) * 0.032) solid #1b1814;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 40px 90px rgba(0, 0, 0, 0.6);
-  animation: hold 7s ease-in-out infinite;
+  width: 458.53px;
+  height: 943.14px;
+  transform: translate(-50%, -50%) scale(var(--s, 0.7));
   z-index: 3;
+  filter: drop-shadow(0 50px 60px rgba(0, 0, 0, 0.55));
 }
-@keyframes hold { 50% { translate: -50% calc(-50% - 6px); } }
-@media (prefers-reduced-motion: reduce) { .phone { animation: none; } }
-
-.screen {
-  position: relative;
-  height: 100%;
-  border-radius: calc(var(--w) * 0.125);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  background: transparent;
-  color: #fff;
-  font-family: system-ui, -apple-system, sans-serif;
-}
-.island {
+.device .frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+.device .screen {
   position: absolute;
-  top: calc(var(--w) * 0.03);
-  left: 50%;
-  translate: -50%;
-  width: 30%;
-  height: calc(var(--w) * 0.085);
-  border-radius: 999px;
-  background: #000;
-  z-index: 4;
+  left: 19.27px;
+  top: 15.55px;
+  width: 420px;
+  height: 912px;
+  clip-path: path("M0.00,101.36 C0.03,96.55 -0.58,82.05 0.21,72.51 C1.00,62.98 1.50,52.92 4.76,44.14 C8.03,35.35 13.23,26.35 19.79,19.79 C26.35,13.23 35.35,8.03 44.14,4.76 C52.92,1.50 62.98,1.00 72.51,0.21 C82.05,-0.58 96.55,0.03 101.36,0.00 L318.64,0.00 C323.45,0.03 337.95,-0.58 347.49,0.21 C357.02,1.00 367.08,1.50 375.86,4.76 C384.65,8.03 393.65,13.23 400.21,19.79 C406.77,26.35 411.97,35.35 415.24,44.14 C418.50,52.92 419.00,62.98 419.79,72.51 C420.58,82.05 419.97,96.55 420.00,101.36 L420.00,810.68 C419.97,815.49 420.58,829.99 419.79,839.53 C419.00,849.07 418.50,859.12 415.24,867.91 C411.97,876.69 406.77,885.69 400.21,892.25 C393.65,898.81 384.65,904.02 375.86,907.28 C367.08,910.54 357.02,911.04 347.49,911.83 C337.95,912.63 323.45,912.01 318.64,912.04 L101.36,912.04 C96.55,912.01 82.05,912.63 72.51,911.83 C62.98,911.04 52.92,910.54 44.14,907.28 C35.35,904.02 26.35,898.81 19.79,892.25 C13.23,885.69 8.03,876.69 4.76,867.91 C1.50,859.12 1.00,849.07 0.21,839.53 C-0.58,829.99 0.03,815.49 0.00,810.68 Z");
+  font-family: system-ui, -apple-system, "SF Pro Text", sans-serif;
+  color: #fff;
 }
-.topbar {
-  flex: none;
-  height: 12%;
-  display: flex;
-  align-items: flex-end;
-  gap: 6%;
-  padding: 0 8% 3%;
-  background: rgba(10, 9, 8, 0.82);
-  font-size: calc(var(--w) * 0.032);
-}
-.topbar .ico { width: calc(var(--w) * 0.07); height: calc(var(--w) * 0.07); color: #fff; opacity: 0.9; }
-.topbar .ratio { width: auto; border: 1.5px solid #fff; border-radius: 3px; padding: 0 3px; font-weight: 700; line-height: 1.5; }
-.topbar .spacer { flex: 1; }
+.device .ui { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+.device .island { position: absolute; left: 147.3px; top: 14.43px; width: 125.4px; height: 36.66px; border-radius: 99px; background: #000; z-index: 4; }
+.device .screenshot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
-.viewport {
-  position: relative;
-  flex: 1;
-  cursor: grab;
-  touch-action: none;
-  outline: none;
-}
-.viewport:focus-visible { box-shadow: inset 0 0 0 2px var(--amber); }
+.viewport { position: absolute; left: 0; width: 420px; z-index: 1; cursor: grab; touch-action: none; outline: none; overflow: hidden; }
+.viewport.photo { top: 131px; height: 560px; }
+.viewport.video { top: 68px; height: 682.33px; }
+.viewport:focus-visible { box-shadow: inset 0 0 0 3px var(--amber); }
 .viewport.dragging { cursor: grabbing; }
-.fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.fallback, .viewport video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.viewport video { visibility: hidden; }
+.viewport video.plain { visibility: visible; }
+
+/* The grid in thirds, and the level: it turns with the camera, and goes yellow when straight. */
+.guides { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.guides > path { stroke: rgba(255, 255, 255, 0.28); stroke-width: 1; fill: none; }
+.level { transition: color 0.2s; color: rgba(255, 255, 255, 0.85); }
+.level path { stroke: currentColor; stroke-width: 1.6; fill: none; }
+.level circle { fill: none; stroke: currentColor; stroke-width: 1.4; }
+.level.true { color: #ffd23f; }
+
+/* Focus: tapped, a square closes on the point, and the picture pulls into focus. */
+.focus {
+  position: absolute;
+  width: 74px;
+  height: 74px;
+  margin: -37px 0 0 -37px;
+  border: 1.5px solid #ffd23f;
+  opacity: 0;
+  pointer-events: none;
+}
+.focus.on { animation: focus 1.3s ease-out forwards; }
+@keyframes focus {
+  0% { opacity: 1; transform: scale(1.45); }
+  22% { opacity: 1; transform: scale(1); }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1); }
+}
+
 .filmname {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
-  font: 600 calc(var(--w) * 0.085) / 1 var(--serif);
+  font: 600 34px/1 var(--serif);
   text-shadow: 0 2px 20px rgba(0, 0, 0, 0.55);
   opacity: 0;
   transition: opacity 0.5s;
@@ -228,87 +224,59 @@ p { margin: 0; }
 .filmname.on { opacity: 1; transition-duration: 0.12s; }
 .flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
 
-.deck {
-  flex: none;
-  height: 25%;
+/* The deck's live parts, where the app has them (points measured on the capture). */
+.hist { position: absolute; left: 168.67px; top: 820.67px; width: 82.67px; height: 50.33px; z-index: 3; pointer-events: none; }
+.pill {
+  position: absolute;
+  left: 110px;
+  top: 770px;
+  width: 200px;
+  height: 26px;
+  z-index: 3;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 9%;
-  background: rgba(38, 36, 34, 0.55);
-  -webkit-backdrop-filter: blur(18px) saturate(1.3);
-  backdrop-filter: blur(18px) saturate(1.3);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: calc(var(--w) * 0.018) calc(var(--w) * 0.04);
-  border-radius: 999px;
+  gap: 7px;
   border: 0;
-  background: rgba(255, 255, 255, 0.12);
+  background: none;
   color: #fff;
-  font: 600 calc(var(--w) * 0.037) / 1.2 system-ui, -apple-system, sans-serif;
   cursor: pointer;
+  font: 600 17px/1 system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
 }
-.pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--scene); transition: background 0.4s; }
-.pill .kind { font-size: 0.72em; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.6; }
-.controls { width: 100%; display: flex; align-items: center; justify-content: space-around; }
-.pocket {
-  width: calc(var(--w) * 0.13);
-  height: calc(var(--w) * 0.13);
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1.5px solid rgba(255, 255, 255, 0.5);
-  overflow: hidden;
-  display: block;
-}
+.pill .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--scene); transition: background 0.4s; }
+.pill .kind { font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, 0.55); }
+.pocket { position: absolute; left: 28px; top: 818px; width: 38.33px; height: 25px; z-index: 3; border-radius: 3px; overflow: hidden; }
 .pocket img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .pocket.got { animation: got 0.6s ease-out; }
-@keyframes got { 40% { transform: scale(1.18); } }
-.shutter {
-  width: calc(var(--w) * 0.29);
-  height: calc(var(--w) * 0.19);
-  border-radius: calc(var(--w) * 0.06);
-  border: 3px solid #fff;
-  background: rgba(0, 0, 0, 0.35);
-  padding: 6px;
-  cursor: pointer;
-  transition: transform 0.12s;
-}
-.shutter:active { transform: scale(0.93); }
-.shutter:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
-.hist {
-  display: block;
-  height: 100%;
+@keyframes got { 40% { transform: scale(1.25); } }
+.shutter { position: absolute; left: 162.33px; top: 814px; width: 95.67px; height: 62px; z-index: 3; border: 0; border-radius: 16px; background: none; cursor: pointer; }
+.shutter:active { background: rgba(255, 255, 255, 0.12); }
+.shutter:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
+.rec { position: absolute; inset: 0; border: 3px solid #ff3b30; border-radius: 4px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.rec::after {
+  content: attr(data-time);
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  translate: -50%;
+  padding: 3px 9px;
   border-radius: 6px;
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.85) 1.1px, transparent 1.4px) 0 0 / 6px 6px;
-  -webkit-mask: linear-gradient(to top, #000 var(--h, 55%), transparent calc(var(--h, 55%) + 1%)),
-    linear-gradient(90deg, #000, #000);
-  -webkit-mask-composite: source-in;
-  mask: linear-gradient(to top, #000 55%, transparent 56%);
-  opacity: 0.85;
+  background: #ff3b30;
+  font: 600 15px/1.2 ui-monospace, "SF Mono", monospace;
 }
-.zoom {
-  width: calc(var(--w) * 0.1);
-  height: calc(var(--w) * 0.1);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.14);
-  display: grid;
-  place-items: center;
-  font: 700 calc(var(--w) * 0.035) / 1 system-ui, sans-serif;
-  color: #ffd23f;
-}
+.rec.on { opacity: 1; }
+
+/* A phone in the page's flow (video, stickers): the frame at --s, the box its scaled size. */
+.holder { position: relative; justify-self: center; width: calc(458.53px * var(--s)); height: calc(943.14px * var(--s)); }
+.holder .device { left: 0; top: 0; transform: scale(var(--s)); transform-origin: 0 0; filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.5)); }
 
 .below {
   position: absolute;
-  top: 100%;
-  left: 50%;
+  top: calc(50% + var(--s, 0.7) * 471.6px + 16px);
+  left: 70%;
   translate: -50%;
-  margin-top: 18px;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -368,9 +336,9 @@ p { margin: 0; }
 
 /* Phones: the phone above, the day's words below it. */
 @media (max-width: 820px) {
-  .phone { --w: min(40vw, 20svh, 260px); left: 50%; top: 31%; }
+  .device { left: 50%; top: 31%; }
+  .below { left: 50%; top: calc(31% + var(--s, 0.4) * 471.6px + 10px); }
   .veil { background: linear-gradient(to bottom, rgba(14, 12, 10, 0.25), transparent 30%, rgba(14, 12, 10, 0.9) 78%); }
-  .below { margin-top: 12px; }
   .hint.look { display: none; }
   .next { display: none; }
   .chapter { align-items: flex-end; padding-bottom: max(28px, env(safe-area-inset-bottom)); }
@@ -563,34 +531,35 @@ section:not(.story) { padding: clamp(72px, 11vw, 150px) clamp(16px, 6vw, 96px); 
 .feature.flip > :first-child { order: 2; }
 .feature h2 { margin-bottom: 18px; }
 .feature p:not(.edge) { color: #ddd4c6; font-size: 18px; max-width: 520px; }
-.shot {
-  width: min(100%, 300px);
+
+/* The widgets as cards on the table: overlapping, turned a little, each lifting to the hand. */
+.cards { position: relative; width: 100%; max-width: 680px; aspect-ratio: 680 / 600; justify-self: center; }
+.wcard {
+  position: absolute;
   height: auto;
-  justify-self: center;
-  border-radius: 38px;
-  border: 8px solid #1f1b17;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 40px 80px rgba(0, 0, 0, 0.55);
-  background: #000;
+  border-radius: 6%/12%;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  rotate: var(--r);
+  transition: rotate 0.5s cubic-bezier(.2, .8, .2, 1), translate 0.5s cubic-bezier(.2, .8, .2, 1), box-shadow 0.5s;
 }
-.duo { display: flex; gap: 18px; justify-content: center; }
-.duo .shot { width: min(46%, 250px); }
+.wcard:hover { rotate: 0deg; translate: 0 -10px; z-index: 9; box-shadow: 0 34px 70px rgba(0, 0, 0, 0.6); }
+/* A composition on a 680 × 600 table, in its own proportions. */
+.c1 { left: 0; top: 14%; width: 43%; --r: -5deg; border-radius: 9.5%; }
+.c2 { left: 35%; top: 2%; width: 52%; --r: 3deg; z-index: 2; border-radius: 7.5%/16%; }
+.c3 { left: 37%; top: 52%; width: 50%; --r: -2deg; z-index: 3; border-radius: 7.5%/16%; }
+.c4 { left: 76%; top: 28%; width: 23%; --r: 7deg; z-index: 4; border-radius: 16%; }
+.c5 { left: 18%; top: 68%; width: 23%; --r: -8deg; z-index: 4; border-radius: 16%; }
 @media (max-width: 820px) {
   .feature, .feature.flip { grid-template-columns: 1fr; }
   .feature.flip > :first-child { order: 0; }
-  .shot { width: min(72%, 280px); }
+  .cards { height: auto; display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 20px 4px 34px; scrollbar-width: none; }
+  .cards::-webkit-scrollbar { display: none; }
+  .cards { aspect-ratio: auto; }
+  .wcard { position: static; flex: none; width: auto; height: 200px; scroll-snap-align: center; rotate: 0deg; border-radius: 22px; }
 }
-
-.pricing .plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
-.plan { background: var(--raised); border: 1px solid var(--faint); border-radius: 22px; padding: 26px 24px 28px; }
-.plan h3 { font-size: 22px; }
-.plan .price { font: 600 28px/1.2 var(--serif); color: var(--amber); margin: 12px 0 10px; }
-.plan .price span { display: block; font: 500 15px/1.5 var(--sans); color: var(--soft); }
-.plan p:last-child { color: #d4cbbd; }
-.plan.pro { background: linear-gradient(160deg, #2a2017, #181512 60%); border-color: rgba(230, 181, 106, 0.35); }
-.private { margin-top: 64px; max-width: 640px; }
-.private h3 { font-size: 28px; margin-bottom: 10px; }
-.private p { color: #d4cbbd; }
-@media (max-width: 820px) { .pricing .plans { grid-template-columns: 1fr; } }
+.credit { font-size: 13px !important; color: var(--soft) !important; margin-top: 16px; }
+.credit a { color: var(--soft); }
+.end .private { color: var(--soft); max-width: 560px; margin: 0 auto 56px; font-size: 15px; }
 
 .end { text-align: center; padding-bottom: clamp(90px, 12vw, 160px) !important; }
 .end h2 { font-size: clamp(40px, 7vw, 92px); }

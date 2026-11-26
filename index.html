@@ -24,7 +24,6 @@
   <nav aria-label="Sections">
     <a href="#films">Films</a>
     <a href="#darkroom">Darkroom</a>
-    <a href="#pricing">Pricing</a>
   </nav>
   <a class="store small" href="https://apps.apple.com/app/id6836638549">App Store</a>
 </header>
@@ -37,47 +36,40 @@
     <canvas id="world" aria-hidden="true"></canvas>
     <div class="veil" aria-hidden="true"></div>
 
-    <div class="phone" id="phone">
+    <!-- FilmCap's own camera screen (matted from the app, img/ui) in an iPhone Air frame; the
+         picture under it, and its histogram, level, focus, film and pocket, are live. -->
+    <div class="device" id="phone">
       <div class="screen">
-        <div class="island" aria-hidden="true"></div>
-        <div class="topbar" aria-hidden="true">
-          <span class="ico ratio">4:3</span>
-          <svg class="ico" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M4 3l16 18" stroke="currentColor" stroke-width="1.6"/></svg>
-          <span class="spacer"></span>
-          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2 2.4"/></svg>
-          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        </div>
-        <div class="viewport" id="viewport" tabindex="0" role="group"
-             aria-label="FilmCap's viewfinder. Swipe, or use the left and right arrow keys, for another film.">
+        <div class="viewport photo" id="viewport" tabindex="0" role="group"
+             aria-label="FilmCap's viewfinder. Swipe, or use the left and right arrow keys, for another film. Tap to focus.">
           <img class="fallback" src="img/camera.webp" alt="FilmCap's camera, a cliff over a turquoise sea in the viewfinder" hidden>
+          <svg class="guides" viewBox="0 0 420 560" aria-hidden="true">
+            <path d="M140 0V560M280 0V560M0 186.7H420M0 373.3H420" />
+            <g id="level" class="level"><path d="M140 280H186M234 280H280" /><circle cx="210" cy="280" r="3.2" /></g>
+          </svg>
+          <div class="focus" id="focus" aria-hidden="true"></div>
           <div class="filmname" id="filmname" aria-hidden="true"></div>
           <div class="flash" id="flash" aria-hidden="true"></div>
         </div>
-        <div class="deck">
-          <button class="pill" id="pill" type="button" aria-label="Next film">
-            <span class="dot" id="dot"></span><span id="pillname">Honey</span><span class="kind" id="pillkind">Warm</span>
-          </button>
-          <div class="controls">
-            <a class="pocket" id="pocket" href="#darkroom" aria-label="Your darkroom">
-              <img id="pocketimg" alt="" hidden>
-            </a>
-            <button class="shutter" id="shutter" type="button" aria-label="Take a photo">
-              <span class="hist" aria-hidden="true"></span>
-            </button>
-            <span class="zoom" aria-hidden="true">1×</span>
-          </div>
-        </div>
+        <img class="ui" src="img/ui/photo.webp" alt="" aria-hidden="true">
+        <canvas class="hist" id="hist" aria-hidden="true"></canvas>
+        <button class="pill" id="pill" type="button" aria-label="Next film">
+          <span class="dot" id="dot"></span><span class="name" id="pillname">Honey</span><span class="kind" id="pillkind">Warm</span>
+        </button>
+        <a class="pocket" id="pocket" href="#darkroom" aria-label="Your darkroom"><img id="pocketimg" alt="" hidden></a>
+        <button class="shutter" id="shutter" type="button" aria-label="Take a photo"></button>
+        <div class="island" aria-hidden="true"></div>
       </div>
-      <div class="below">
-        <button class="tilt" id="tilt" type="button" hidden>Move your phone to look around</button>
-        <p class="hints" id="hints" aria-hidden="true">
-          <span class="hint look">Move to look around</span>
-          <span class="hint swipe">Swipe the picture for another film</span>
-          <span class="hint keep">Tap the shutter to keep one</span>
-        </p>
-      </div>
+      <img class="frame" src="img/ui/air.svg" alt="" aria-hidden="true">
     </div>
-
+    <div class="below" id="below">
+      <button class="tilt" id="tilt" type="button" hidden>Move your phone to look around</button>
+      <p class="hints" id="hints" aria-hidden="true">
+        <span class="hint look">Move to look around</span>
+        <span class="hint swipe">Swipe for another film</span>
+        <span class="hint keep">Tap the shutter to keep one</span>
+      </p>
+    </div>
     <p class="live" id="live" aria-live="polite"></p>
   </div>
 
@@ -180,15 +172,40 @@
 
 <section class="pair-sections">
   <article class="feature">
-    <img class="shot" src="img/video.webp" width="640" height="1326" alt="FilmCap's video mode, a misty forest in the viewfinder" loading="lazy">
+    <div class="holder" style="--s: 0.66">
+      <div class="device video" id="vphone">
+        <div class="screen">
+          <div class="viewport video" id="vviewport" tabindex="0" role="group"
+               aria-label="FilmCap's video viewfinder, a sunset over a lake. Swipe, or use the left and right arrow keys, for another film.">
+            <video id="clip" src="img/video/lake.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+            <div class="filmname" id="vfilmname" aria-hidden="true"></div>
+            <div class="rec" id="rec" aria-hidden="true"></div>
+          </div>
+          <img class="ui" src="img/ui/video.webp" alt="" aria-hidden="true">
+          <canvas class="hist" id="vhist" aria-hidden="true"></canvas>
+          <button class="pill" id="vpill" type="button" aria-label="Next film">
+            <span class="dot" id="vdot"></span><span class="name" id="vpillname">Halcyon</span><span class="kind" id="vpillkind">Warm</span>
+          </button>
+          <button class="shutter" id="vshutter" type="button" aria-label="Record"></button>
+          <div class="island" aria-hidden="true"></div>
+        </div>
+        <img class="frame" src="img/ui/air.svg" alt="" aria-hidden="true">
+      </div>
+    </div>
     <div>
       <p class="edge">07A · VIDEO</p>
       <h2>And when it moves.</h2>
-      <p>Every film works on video too. Shoot Log and ProRes when you’d rather grade it yourself. Dolly zoom and forced perspective, for the shots you’ve only seen in films.</p>
+      <p>Every film works on video too. Swipe the picture: the same films, on a clip that’s moving. Shoot Log and ProRes when you’d rather grade it yourself, and dolly zoom and forced perspective for the shots you’ve only seen in films.</p>
+      <p class="credit">Clip: “Sunset in Lake Toba” by Nafisathallah, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, through FilmCap’s films.</p>
     </div>
   </article>
   <article class="feature flip">
-    <img class="shot" src="img/stickers.webp" width="640" height="1326" alt="Stickers earned in FilmCap" loading="lazy">
+    <div class="holder" style="--s: 0.62">
+      <div class="device still">
+        <div class="screen"><img class="screenshot" src="img/stickers.webp" alt="Stickers earned in FilmCap" loading="lazy"><div class="island" aria-hidden="true"></div></div>
+        <img class="frame" src="img/ui/air.svg" alt="" aria-hidden="true">
+      </div>
+    </div>
     <div>
       <p class="edge">08A · STICKERS</p>
       <h2>Some moments deserve a sticker.</h2>
@@ -196,50 +213,23 @@
     </div>
   </article>
   <article class="feature">
-    <div class="duo">
-      <img class="shot" src="img/widgets-prints.webp" width="640" height="1326" alt="Home Screen widgets: a print over its colours" loading="lazy">
-      <img class="shot" src="img/widgets-films.webp" width="640" height="1326" alt="Home Screen widgets: recent films and quick buttons" loading="lazy">
+    <div class="cards" id="cards">
+      <img class="wcard c1" src="img/widgets/print-large.webp" alt="Large widget: your newest photo over its five colours" loading="lazy">
+      <img class="wcard c2" src="img/widgets/films-medium.webp" alt="Medium widget: the films you used lately" loading="lazy">
+      <img class="wcard c3" src="img/widgets/print-medium.webp" alt="Medium widget: a photo and its colours" loading="lazy">
+      <img class="wcard c4" src="img/widgets/films-small.webp" alt="Small widget: three recent films" loading="lazy">
+      <img class="wcard c5" src="img/widgets/shoot-small.webp" alt="Small widget: photo, video and the editor, one tap each" loading="lazy">
     </div>
     <div>
       <p class="edge">09A · HOME SCREEN</p>
       <h2>Keep them close.</h2>
-      <p>Widgets for your newest photo and its colours, a roll of your photos at random, and the films you used lately, one tap from the camera.</p>
+      <p>Widgets for your newest photo and its colours, the films you used lately, and one tap to a photo, a video or the editor.</p>
     </div>
   </article>
 </section>
 
-<div class="strip" aria-hidden="true"><span>FILMCAP · 35MM · SAFETY FILM</span><span>10A</span></div>
-
-<section class="pricing" id="pricing">
-  <header class="head">
-    <p class="edge">10A · PRICING</p>
-    <h2>Start with a free roll.</h2>
-  </header>
-  <div class="plans">
-    <div class="plan">
-      <h3>Your first roll</h3>
-      <p class="price">Free</p>
-      <p>Your first 30 photos and 5 videos, with every film.</p>
-    </div>
-    <div class="plan">
-      <h3>After that</h3>
-      <p class="price">Free</p>
-      <p>Keep three films of your choice, for good. Photos carry a small FilmCap mark.</p>
-    </div>
-    <div class="plan pro">
-      <h3>FilmCap Pro</h3>
-      <p class="price">$3 a month<span> · $30 a year · $50 once</span></p>
-      <p>Every film and tool, the film editor, and every film still to come. No mark. Shared with your family.</p>
-    </div>
-  </div>
-  <p class="note">US prices; the App Store shows yours. Subscriptions renew until cancelled in Settings, at least 24 hours before the period ends. No free trials.</p>
-  <div class="private">
-    <h3>Your photos stay yours.</h3>
-    <p>Photos and videos are developed on your iPhone and saved to your Photos library. FilmCap sends none of them anywhere. <a href="privacy.html">Privacy Policy</a></p>
-  </div>
-</section>
-
 <section class="end">
+  <p class="private">Photos and videos are developed on your iPhone and saved to your Photos library. FilmCap sends none of them anywhere. <a href="privacy.html">Privacy Policy</a></p>
   <h2>Go keep something.</h2>
   <p class="cta"><a class="store" href="https://apps.apple.com/app/id6836638549">Download on the App Store</a></p>
   <p class="meta">Free · Requires iOS 27 or later</p>
@@ -253,7 +243,7 @@
     <a href="privacy.html">Privacy Policy</a>
     <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Terms of Use (EULA)</a>
   </nav>
-  <p>360° photos by <a href="https://polyhaven.com">Poly Haven</a> (CC0). Set in <a href="https://github.com/joshpuckett/allo">Allo</a> (<a href="fonts/Allo-OFL.txt">SIL Open Font License</a>).</p>
+  <p>360° photos by <a href="https://polyhaven.com">Poly Haven</a> (CC0). Video clip “Sunset in Lake Toba” by Nafisathallah (<a href="https://commons.wikimedia.org/wiki/File:Sunset_in_Lake_Toba.webm">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>), shown through FilmCap’s films. Set in <a href="https://github.com/joshpuckett/allo">Allo</a> (<a href="fonts/Allo-OFL.txt">SIL Open Font License</a>).</p>
   <p>Apple, iPhone and App Store are trademarks of Apple Inc., registered in the U.S. and other countries.</p>
 </footer>
 
