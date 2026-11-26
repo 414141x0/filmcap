@@ -17,9 +17,9 @@
   const ease = (t) => 1 - Math.pow(1 - t, 3);
 
   const SCENES = {
-    cafe: { full: "img/pano/cafe.jpg", soft: "img/pano/cafe-soft.jpg", u: 0.575, pitch: 2, tint: "#e9b98a", when: "Morning, 8:14", place: "The café" },
-    lake: { full: "img/pano/lake.jpg", soft: "img/pano/lake-soft.jpg", u: 0.25, pitch: 4, tint: "#a9bcd6", when: "Evening, 6:40", place: "The lake" },
-    night: { full: "img/pano/night.jpg", soft: "img/pano/night-soft.jpg", u: 0.385, pitch: -3, tint: "#f08a3c", when: "Night, 11:52", place: "The walk home" },
+    cafe: { full: "img/pano/cafe.jpg", mid: "img/pano/cafe-mid.jpg", soft: "img/pano/cafe-soft.jpg", u: 0.575, pitch: 2, tint: "#e9b98a", when: "Morning, 8:14", place: "The café" },
+    lake: { full: "img/pano/lake.jpg", mid: "img/pano/lake-mid.jpg", soft: "img/pano/lake-soft.jpg", u: 0.25, pitch: 4, tint: "#a9bcd6", when: "Evening, 6:40", place: "The lake" },
+    night: { full: "img/pano/night.jpg", mid: "img/pano/night-mid.jpg", soft: "img/pano/night-soft.jpg", u: 0.385, pitch: -3, tint: "#f08a3c", when: "Night, 11:52", place: "The walk home" },
   };
   /* Grain for the page's picture (the films' own grain is spatial, which the tables leave out). */
   const GRAIN = {
@@ -359,14 +359,22 @@
     scr = { x: (s.left - c.left) * dpr, y: (c.bottom - s.bottom) * dpr, w: s.width * dpr, h: s.height * dpr };
   }
 
+  /* A scene in three steps: softened (the world around the phone), then sharp enough for the
+     viewfinder (2048 wide, quick), then full (4096). The viewfinder is never left soft: a scene is
+     only shown once a sharp picture of it is in (`sharp`). */
   const sceneLoads = {};
   function loadScene(name, sharp) {
     const s = SCENES[name], entry = sceneLoads[name] || (sceneLoads[name] = {});
-    textures[name] = textures[name] || {};
-    entry.soft = entry.soft || picture(s.soft).then((img) => { textures[name].soft = kit.texture(img, { repeat: true }); kick(); });
-    if (sharp) entry.full = entry.full || picture(s.full).then((img) => { textures[name].full = kit.texture(img, { repeat: true }); kick(); });
-    return entry.soft;
+    const t = textures[name] || (textures[name] = {});
+    const keep = (key) => (img) => { t[key] = kit.texture(img, { repeat: true }); kick(); };
+    entry.soft = entry.soft || picture(s.soft).then(keep("soft"));
+    if (sharp && !entry.sharp) {
+      entry.sharp = Promise.all([entry.soft, picture(s.mid).then(keep("mid"))]);
+      entry.sharp.then(() => picture(s.full)).then(keep("full")).catch(() => {});
+    }
+    return sharp ? entry.sharp : entry.soft;
   }
+  const sharpOf = (t) => t.full || t.mid;
 
   function draw(time) {
     const a = textures[state.scene] || {}, b = (state.next && textures[state.next]) || {};
@@ -376,7 +384,8 @@
     const { gl, u } = kit;
     measure();
     gl.viewport(0, 0, canvas.width, canvas.height);
-    kit.bind(0, a.full || a.soft); kit.bind(1, b.full || b.soft || a.soft);
+    // The opening scene may be soft for the moment its sharp picture takes; a new scene never is.
+    kit.bind(0, sharpOf(a) || a.soft); kit.bind(1, sharpOf(b) || sharpOf(a) || a.soft);
     kit.bind(2, a.soft); kit.bind(3, b.soft || a.soft);
     kit.bind(4, lutA); kit.bind(5, lutB || lutA);
     gl.uniform4f(u.uRect, rect.x, rect.y, rect.w, rect.h);
@@ -387,7 +396,7 @@
     gl.uniform1f(u.uYaw, state.yaw);
     gl.uniform1f(u.uPitch, state.pitch);
     gl.uniform1f(u.uRoll, state.roll);
-    gl.uniform1f(u.uMix, state.next && b.soft ? state.mix : 0);
+    gl.uniform1f(u.uMix, state.next && sharpOf(b) ? state.mix : 0);
     gl.uniform1f(u.uSplit, lutB ? roll.split : -1);
     gl.uniform1f(u.uSide, roll.side);
     gl.uniform1f(u.uGrainA, films[roll.film].grain);

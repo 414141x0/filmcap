@@ -16,8 +16,8 @@ The pages for the FilmCap iPhone app, served by GitHub Pages:
   of blue, red across and green down each), baked from the app itself by `WebFilmsBake` in the app's
   tests (`TEST_RUNNER_NSC_BAKE_WEB_FILMS=<folder>`): colour and tone only, as FilmCap measures its
   films. `films.json` names them.
-- `img/pano/`: the day's three scenes, 4096 × 2048 for the viewfinder and 1024 × 512 softened for the
-  world around the phone. 360° photos by [Poly Haven](https://polyhaven.com) (CC0): Comfy Café,
+- `img/pano/`: the day's three scenes: 1024 × 512 softened for the world around the phone, then
+  2048 × 1024 (`-mid`) and 4096 × 2048 for the viewfinder, which waits for a sharp one. 360° photos by [Poly Haven](https://polyhaven.com) (CC0): Comfy Café,
   Bell Park Pier, Cobblestone Street Night.
 - `img/views/`: the lake through each film (the film wall) and the night lane plain and through
   Lantern Night (the slider), made with the same tables.
